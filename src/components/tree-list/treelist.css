@@ -1,0 +1,11 @@
+ul {
+    list-style-position: inside;
+}
+
+.tree-node {
+    margin: 4px 0;
+}
+
+.tree-node ul {
+    padding-left: 20px;
+}

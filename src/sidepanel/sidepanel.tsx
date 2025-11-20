@@ -2,11 +2,59 @@ import React, { useState, useEffect } from 'react';
 import { DOMData } from '../types/chrome';
 import { createRoot } from 'react-dom/client';
 import './sidepanel.css';
+import TreeNodeComponent from '../components/tree-list/treelist';
+import { TreeList } from '../classes/treelist';
 
 const SidePanel: React.FC = () => {
   const [domData, setDomData] = useState<DOMData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const tree = TreeList.fromObject(
+    { 
+      id: 'root', 
+      label: '', 
+      nodes: [
+        {
+          id: '1',
+          label: 'TypeScript hints'
+        },
+        {
+          id: '2',
+          label: 'Check file hashes',
+          nodes: [
+            {
+              id: '2-1',
+              label: 'Basic Integrity Checker'
+            },
+            {
+              id: '2-2',
+              label: 'Server-side integrity check'
+            },
+            {
+              id: '2-3',
+              label: 'Check metadata and manifest'
+            },
+            {
+              id: '2-4',
+              label: 'Self-Protection and Checksum'
+            },
+            {
+              id: '2-5',
+              label: 'Integrate to base app'
+            },
+            {
+              id: '2-6',
+              label: 'Generate hashes for development'
+            }
+          ]
+        },
+        {
+          id: '3',
+          label: 'Angular material theming and'
+        },
+      ]
+    });
 
   const fetchDOMData = async () => {
     setLoading(true);
@@ -28,9 +76,10 @@ const SidePanel: React.FC = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     setTimeout(() => {
       fetchDOMData();      
-    });
+    }, 1000);
   }, []);
 
   if (loading) {
@@ -56,45 +105,62 @@ const SidePanel: React.FC = () => {
       </header>
 
       {domData && (
-        <div className="dom-data">
-          <section className="data-section">
-            <h2>Page Info</h2>
-            <p><strong>Title:</strong> {domData.title}</p>
-            <p><strong>URL:</strong> {domData.url}</p>
-          </section>
-
-          <section className="data-section">
-            <h2>Headings ({domData.headings.length})</h2>
-            <ul>
-              {domData.headings.map((heading, index) => (
-                <li key={index}>{heading}</li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="data-section">
-            <h2>Links ({domData.links.length})</h2>
-            <ul>
-              {domData.links.map((link, index) => (
-                <li key={index}>
-                  <a href={link} target="_blank" rel="noopener noreferrer">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="data-section">
-            <h2>Content Preview</h2>
-            <p className="text-preview">
-              {domData.textContent}...
-            </p>
-          </section>
+        <div className='tree'>
+          <TreeNodeComponent data={tree}></TreeNodeComponent>
         </div>
       )}
     </div>
   );
+
+  // return (
+  //   <div className="side-panel">
+  //     <header className="panel-header">
+  //       <h1>DOM Inspector</h1>
+  //       <button onClick={fetchDOMData} className="refresh-btn">
+  //         Refresh
+  //       </button>
+  //     </header>
+
+  //     {domData && (
+  //       <div className="dom-data">
+  //         <section className="data-section">
+  //           <h2>Page Info</h2>
+  //           <p><strong>Title:</strong> {domData.title}</p>
+  //           <p><strong>URL:</strong> {domData.url}</p>
+  //         </section>
+
+  //         <section className="data-section">
+  //           <h2>Headings ({domData.headings.length})</h2>
+  //           <ul>
+  //             {domData.headings.map((heading, index) => (
+  //               <li key={index}>{heading}</li>
+  //             ))}
+  //           </ul>
+  //         </section>
+
+  //         <section className="data-section">
+  //           <h2>Links ({domData.links.length})</h2>
+  //           <ul>
+  //             {domData.links.map((link, index) => (
+  //               <li key={index}>
+  //                 <a href={link} target="_blank" rel="noopener noreferrer">
+  //                   {link}
+  //                 </a>
+  //               </li>
+  //             ))}
+  //           </ul>
+  //         </section>
+
+  //         <section className="data-section">
+  //           <h2>Content Preview</h2>
+  //           <p className="text-preview">
+  //             {domData.textContent}...
+  //           </p>
+  //         </section>
+  //       </div>
+  //     )}
+  //   </div>
+  // );
 };
 
 const container = document.getElementById('root');

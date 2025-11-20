@@ -1,5 +1,7 @@
 import { DOMData } from '../types/chrome';
 
+console.log('🎯 DOM Inspector content script LOADED on:', window.location.href);
+
 function extractDOMData(): DOMData {
   const title = document.title;
   const url = window.location.href;

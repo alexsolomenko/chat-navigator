@@ -9,9 +9,16 @@ export class ChatModel {
     }
 
     private static getDeepseekData(): ITreeListNode {
-        const responses = Array.from(document.querySelectorAll('[data-um-id] .ds-message'))
-            .map(el => (el as HTMLElement)?.innerText)
-            .filter(Boolean);
-        return null;
+        const result = new TreeListNode();
+        document.querySelectorAll('[data-um-id]').forEach(node => {
+            result.addNode((node as HTMLElement).innerText);
+            const next = node.nextElementSibling;
+            if (next) {
+                document.querySelectorAll('h1, h2, h3, h4, h5').forEach(h => {
+
+                });
+            }
+        });
+        return result;
     }
 }

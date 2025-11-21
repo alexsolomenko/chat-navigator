@@ -10,6 +10,8 @@ function extractDOMData(): DOMData {
     .map(h => h.textContent?.trim() || '')
     .filter(Boolean);
 
+  console.log('---', headings);
+
   const links = Array.from(document.querySelectorAll('a'))
     .map(a => a.href)
     .filter(href => href && !href.startsWith('javascript:'));

@@ -2,7 +2,7 @@ export interface ITreeListNode {
     id: string;
     label: string;
     preview?: string;
-    nodes?: TreeListNode[];
+    nodes?: ITreeListNode[];
 }
 
 export class TreeListNode implements ITreeListNode {
@@ -11,9 +11,19 @@ export class TreeListNode implements ITreeListNode {
     preview?: string;
     nodes?: TreeListNode[];
 
-    constructor(id: string, label: string) {
-        this.id = id;
-        this.label = label; 
+    constructor() {
+        this.id = 'root';
+    }
+
+    addNode(label?: string) {
+        if (!this.nodes) {
+            this.nodes = [];
+        }
+        this.nodes.push(Object.setPrototypeOf(
+            { 
+                id: this.id + '-' + (this.nodes.length + 1).toString(),
+                label: label
+            }, TreeListNode.prototype));
     }
 
     static fromObject(obj: ITreeListNode): TreeListNode {
